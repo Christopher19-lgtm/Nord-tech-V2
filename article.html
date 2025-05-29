@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Article Nord'tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fc;
+      margin: 0;
+      padding: 20px;
+    }
+    .article {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 800px;
+      margin: auto;
+    }
+    .article h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .meta {
+      font-size: 12px;
+      color: #777;
+      margin-bottom: 10px;
+    }
+    .content {
+      margin-top: 20px;
+      line-height: 1.6;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #2a5db0;
+    }
+  </style>
+</head>
+<body>
+  <div class="article">
+    <h1 id="titre">Chargement...</h1>
+    <div class="meta" id="meta"></div>
+    <p><strong>Résumé :</strong> <span id="resume"></span></p>
+    <div class="content" id="contenu"></div>
+    <a href="index.html">← Retour à la liste</a>
+  </div>
+
+  <script>
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const articleId = parseInt(getParam('id'));
+    if (!isNaN(articleId)) {
+      fetch('nordtech_articles_html.json')
+        .then(response => response.json())
+        .then(data => {
+          const article = data[articleId];
+          if (article) {
+            document.getElementById('titre').textContent = article.titre;
+            document.getElementById('meta').textContent =
+              `${article.vues} vues · ${article.likes} likes · ${article.temps_lecture} min · Publié le ${article.date_publication}`;
+            document.getElementById('resume').textContent = article.résumé;
+            document.getElementById('contenu').innerHTML = article.contenu_html.replace(/\n/g, "<br>");
+          } else {
+            document.getElementById('titre').textContent = "Article introuvable";
+          }
+        });
+    } else {
+      document.getElementById('titre').textContent = "Aucun ID fourni";
+    }
+  </script>
+</body>
+</html>
