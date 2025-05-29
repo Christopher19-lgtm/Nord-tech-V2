@@ -58,7 +58,7 @@
 
     const articleId = parseInt(getParam('id'));
     if (!isNaN(articleId)) {
-      fetch('nordtech_articles_html.json')
+      fetch('nord_tech_html.json')
         .then(response => response.json())
         .then(data => {
           const article = data[articleId];
